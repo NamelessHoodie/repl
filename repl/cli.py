@@ -38,17 +38,19 @@ def main():
                         help="Output filename for the .py file (default: repl_session.py)")
     parser.add_argument('-o', '--output', dest='output_flag', type=str,
                         help="Output filename for the .py file (alternative to positional argument)")
+    parser.add_argument('-p', '--python-path', dest='python_interpreter_path', type=str, default='python3', help='Path to your preferred python interpreter executable') 
     args = parser.parse_args()
 
     # Determine the output filename
     output_file = args.output_flag if args.output_flag else args.output
-
+    # Determine python interprer executable path
+    python_interpreter_path = args.python_interpreter_path
     # Start a script session to record the REPL
     script_file = 'repl_session.txt'
     print(f"Script started, output log file is '{script_file}'")
 
     # Use `script` to launch the Python REPL directly
-    subprocess.run(['script', '-f', script_file, '-c', 'python3'])
+    subprocess.run(['script', '-f', script_file, '-c', python_interpreter_path])
 
     # Process the recorded session to create a .py file
     process_repl_session(script_file, output_file)
