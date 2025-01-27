@@ -50,17 +50,12 @@ jobs:
         pattern: wheels-*
         merge-multiple: true
 
-    - name: Verify artifacts
+    - name: Upload Release Assets
       run: |
-        echo "Collected artifacts:"
-        ls -l dist/
-        echo "Total files: $(find dist -type f | wc -l)"
-
-    - name: Upload to Release
-      uses: actions/upload-release-asset@v1
+        for file in dist/*; do
+          echo "Uploading $file"
+          name="${file##*/}"
+          gh release upload ${{ github.event.release.tag_name }} "$file" --repo $GITHUB_REPOSITORY
+        done
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./dist/*
-        asset_name: ${{ basename(asset_path) }}
