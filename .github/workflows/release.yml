@@ -38,6 +38,8 @@ jobs:
 
   create-release:
     name: Assemble Release Assets
+    permissions:
+      contents: write
     needs: [build-wheels]
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
@@ -50,12 +52,15 @@ jobs:
         pattern: wheels-*
         merge-multiple: true
 
-    - name: Upload Release Assets
-      run: |
-        for file in dist/*; do
-          echo "Uploading $file"
-          name="${file##*/}"
-          gh release upload ${{ github.event.release.tag_name }} "$file" --repo $GITHUB_REPOSITORY
-        done
+    - name: Verify artifacts
+      run: ls -lR dist/
+
+    - name: Publish Release Assets
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          dist/*.whl
+          dist/*.tar.gz
+        tag_name: ${{ github.event.release.tag_name }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
