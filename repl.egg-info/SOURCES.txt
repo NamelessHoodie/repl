@@ -1,5 +1,7 @@
 README.md
 setup.py
+repl/__init__.py
+repl/cli.py
 repl.egg-info/PKG-INFO
 repl.egg-info/SOURCES.txt
 repl.egg-info/dependency_links.txt

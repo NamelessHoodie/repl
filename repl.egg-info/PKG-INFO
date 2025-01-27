@@ -1,11 +1,3 @@
 Metadata-Version: 2.2
 Name: repl
 Version: 0.1.0
-Summary: A Python REPL wrapper that saves inputs to a .py file.
-Author: Your Name
-Author-email: your.email@example.com
-Requires-Python: >=3.6
-Dynamic: author
-Dynamic: author-email
-Dynamic: requires-python
-Dynamic: summary
