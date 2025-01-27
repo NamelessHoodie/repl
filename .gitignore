@@ -3,11 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Python packaging artifacts
-*.egg-info/
-build/
-dist/
-
 # Distribution / packaging
 build/
 dist/
