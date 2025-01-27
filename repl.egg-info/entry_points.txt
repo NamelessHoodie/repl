@@ -1,0 +1,2 @@
+[console_scripts]
+repl = repl.cli:main
