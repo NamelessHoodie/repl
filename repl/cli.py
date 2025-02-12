@@ -3,10 +3,12 @@ import ast
 import code
 from argparse import ArgumentParser
 
-class ReplRecorder(code.InteractiveConsole = None):
-    def __init__(self, output_file, *args, **kwargs):
+_outpath_default_ = 'repl_session.py'
+
+class ReplRecorder(code.InteractiveConsole):
+    def __init__(self, output_file = _outpath_default_, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.output_file = output_file if output_file else 
+        self.output_file = output_file
         self.current_block = []
         self.had_error = False
 
@@ -65,8 +67,6 @@ class ReplRecorder(code.InteractiveConsole = None):
         self.had_error = True
         super().showtraceback()
 
-_outpath_default_ = 'repl_session.py'
-
 def interact(output_file_name=_outpath_default_):
     try:
         with open(output_file_name, 'w') as output_file:
@@ -88,7 +88,7 @@ def main():
 
     output_file_name = args.output_flag or args.output
 
-    ReplToStream(args.output_flag or args.output)
+    interact(args.output_flag or args.output)
 
 if __name__ == '__main__':
     main()
