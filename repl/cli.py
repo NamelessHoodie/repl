@@ -3,10 +3,10 @@ import ast
 import code
 from argparse import ArgumentParser
 
-class ReplRecorder(code.InteractiveConsole):
+class ReplRecorder(code.InteractiveConsole = None):
     def __init__(self, output_file, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.output_file = output_file
+        self.output_file = output_file if output_file else 
         self.current_block = []
         self.had_error = False
 
@@ -65,16 +65,9 @@ class ReplRecorder(code.InteractiveConsole):
         self.had_error = True
         super().showtraceback()
 
-def main():
-    parser = ArgumentParser(description="Python REPL wrapper to save inputs to a .py file.")
-    parser.add_argument('output', nargs='?', default='repl_session.py',
-                      help="Output filename (default: repl_session.py)")
-    parser.add_argument('-o', '--output', dest='output_flag', type=str,
-                      help="Output filename (alternative)")
-    args = parser.parse_args()
+_outpath_default_ = 'repl_session.py'
 
-    output_file_name = args.output_flag or args.output
-
+def interact(output_file_name):
     try:
         with open(output_file_name, 'w') as output_file:
             print(f"Starting REPL session. Output will be saved to '{output_file_name}'")
@@ -84,6 +77,18 @@ def main():
         print("\nREPL session interrupted. Exiting.")
     finally:
         print(f"REPL session saved to {output_file_name}")
+    
+def main():
+    parser = ArgumentParser(description="Python REPL wrapper to save inputs to a .py file.")
+    parser.add_argument('output', nargs='?', default=_outpath_default_,
+                      help=f"Output filename (default: {_outpath_default_})")
+    parser.add_argument('-o', '--output', dest='output_flag', type=str,
+                      help="Output filename (alternative)")
+    args = parser.parse_args()
+
+    output_file_name = args.output_flag or args.output
+
+    ReplToStream(args.output_flag or args.output)
 
 if __name__ == '__main__':
     main()
