@@ -67,7 +67,7 @@ class ReplRecorder(code.InteractiveConsole = None):
 
 _outpath_default_ = 'repl_session.py'
 
-def interact(output_file_name):
+def interact(output_file_name=_outpath_default_):
     try:
         with open(output_file_name, 'w') as output_file:
             print(f"Starting REPL session. Output will be saved to '{output_file_name}'")
