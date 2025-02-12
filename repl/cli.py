@@ -1,12 +1,13 @@
 import sys
 import ast
 import code
+import readline
 from argparse import ArgumentParser
 
 _outpath_default_ = 'repl_session.py'
 
 class ReplRecorder(code.InteractiveConsole):
-    def __init__(self, output_file = _outpath_default_, *args, **kwargs):
+    def __init__(self, output_file=_outpath_default_, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.output_file = output_file
         self.current_block = []
@@ -69,6 +70,7 @@ class ReplRecorder(code.InteractiveConsole):
 
 def interact(output_file_name=_outpath_default_):
     try:
+        readline.parse_and_bind('tab: complete')
         with open(output_file_name, 'w') as output_file:
             print(f"Starting REPL session. Output will be saved to '{output_file_name}'")
             recorder = ReplRecorder(output_file)
@@ -77,7 +79,7 @@ def interact(output_file_name=_outpath_default_):
         print("\nREPL session interrupted. Exiting.")
     finally:
         print(f"REPL session saved to {output_file_name}")
-    
+
 def main():
     parser = ArgumentParser(description="Python REPL wrapper to save inputs to a .py file.")
     parser.add_argument('output', nargs='?', default=_outpath_default_,
